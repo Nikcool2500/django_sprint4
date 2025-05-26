@@ -27,7 +27,7 @@ def post_detail(request, id):
 
     if not post.category.is_published and request.user != post.author:
         raise Http404("Category not published")
-    
+
     lol = post.is_published
 
     if (not lol or post.pub_date > now) and request.user != post.author:
