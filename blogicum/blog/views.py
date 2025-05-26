@@ -27,8 +27,10 @@ def post_detail(request, id):
 
     if not post.category.is_published and request.user != post.author:
         raise Http404("Category not published")
+    
+    lol = post.is_published
 
-    if (not post.is_published or post.pub_date > now) and request.user != post.author:
+    if (not lol or post.pub_date > now) and request.user != post.author:
         raise Http404("Post not found")
 
     form = CommentForm()
@@ -43,12 +45,16 @@ def category_posts(request, category_slug):
     category = get_object_or_404(
         Category.objects.filter(is_published=True), slug=category_slug
     )
-    post_list = Post.objects.published().filter(category=category).order_by("-pub_date")
+    post_list = Post.objects.published().filter(
+        category=category
+    ).order_by("-pub_date")
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
-        request, "blog/category.html", {"category": category, "page_obj": page_obj}
+        request,
+        "blog/category.html",
+        {"category": category, "page_obj": page_obj}
     )
 
 
@@ -67,7 +73,8 @@ def profile(request, username):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
-        request, "blog/profile.html", {"profile": profile, "page_obj": page_obj}
+        request, "blog/profile.html",
+        {"profile": profile, "page_obj": page_obj}
     )
 
 
@@ -138,7 +145,8 @@ def edit_comment(request, post_id, comment_id):
             return redirect("blog:post_detail", id=post_id)
     else:
         form = CommentForm(instance=comment)
-    return render(request, "blog/comment.html", {"form": form, "comment": comment})
+    return render(request, "blog/comment.html",
+                  {"form": form, "comment": comment})
 
 
 @login_required
@@ -162,4 +170,5 @@ def delete_comment(request, post_id, comment_id):
         comment.delete()
         return redirect("blog:post_detail", id=post_id)
 
-    return render(request, "blog/comment.html", {"comment": comment, "form": None})
+    return render(request, "blog/comment.html",
+                  {"comment": comment, "form": None})
