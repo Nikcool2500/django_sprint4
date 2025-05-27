@@ -3,11 +3,11 @@ from django.views.generic import TemplateView
 
 
 class AboutView(TemplateView):
-    template = "pages/about.html"
+    template_name = "pages/about.html"
 
 
 class RulesView(TemplateView):
-    template = "pages/rules.html"
+    template_name = "pages/rules.html"
 
 
 def page_not_found(request, exception):

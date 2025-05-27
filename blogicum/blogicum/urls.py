@@ -7,9 +7,9 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", include("blog.urls", namespace="blog")),
     path("pages/", include("pages.urls", namespace="pages")),
+    path("admin/", admin.site.urls),
     path("auth/", include("django.contrib.auth.urls")),
     path("auth/registration/",
          views.RegistrationView.as_view(), name="registration"),

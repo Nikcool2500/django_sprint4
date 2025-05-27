@@ -9,7 +9,9 @@ User = get_user_model()
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ("title", "text", "pub_date", "location", "category", "image")
+        fields = ("title",
+                  "text",
+                  "is_published", "pub_date", "location", "category", "image")
 
 
 class CommentForm(forms.ModelForm):
