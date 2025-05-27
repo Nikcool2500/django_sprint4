@@ -51,12 +51,15 @@ def post_detail(request, post_id):
 
 def category_posts(request, category_slug):
     category = get_object_or_404(
-        Category.objects.filter(is_published=True), slug=category_slug
+        Category.objects.filter(is_published=True),
+        slug=category_slug
     )
+
     post_list = get_published_posts_no_filter(
         Post.objects
     ).filter(category=category).order_by("-pub_date")
     page_obj = paginate(post_list, request)
+
     return render(
         request,
         "blog/category.html",
@@ -173,7 +176,6 @@ def delete_comment(request, post_id, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if comment.author != request.user:
         return redirect("blog:post_detail", post_id=post_id)
-
     if request.method == "POST":
         comment.delete()
         return redirect("blog:post_detail", post_id=post_id)
