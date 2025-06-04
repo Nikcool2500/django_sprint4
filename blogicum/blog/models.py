@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from blog.utils import (
-    get_published_posts
+    get_published_posts,
+    annotate_comment_count,
 )
-from django.db.models import Count
 
 
 User = get_user_model()
@@ -52,9 +52,7 @@ class Category(BaseModel):
 
 class PostQuerySet(models.QuerySet):
     def published(self):
-        return get_published_posts(self).annotate(
-            comment_count=Count("comments")
-        )
+        return annotate_comment_count(get_published_posts(self))
 
 
 class Post(BaseModel):
