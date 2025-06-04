@@ -23,14 +23,6 @@ def index(request):
     page_obj = paginate(post_list, request)
     return render(request, "blog/index.html", {"page_obj": page_obj})
 
-# from django.core.paginator import Paginator
-# def index(request):
-#     post_list = Post.objects.published().order_by("-pub_date")
-#     paginator = Paginator(post_list, 10)
-#     page_number = request.GET.get("page")
-#     page_obj = paginator.get_page(page_number)
-#     return render(request, "blog/index.html", {"page_obj": page_obj})
-
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post.objects.all(), pk=post_id)
