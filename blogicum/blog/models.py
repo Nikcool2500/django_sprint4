@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils import timezone
+from blog.utils import (
+    get_published_posts
+)
 from django.db.models import Count
 
 
@@ -50,10 +52,9 @@ class Category(BaseModel):
 
 class PostQuerySet(models.QuerySet):
     def published(self):
-        now = timezone.now()
-        return self.filter(
-            is_published=True, category__is_published=True, pub_date__lte=now
-        ).annotate(comment_count=Count("comments"))
+        return get_published_posts(self).annotate(
+            comment_count=Count("comments")
+        )
 
 
 class Post(BaseModel):
